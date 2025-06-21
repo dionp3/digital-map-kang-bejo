@@ -1,0 +1,474 @@
+/* Variabel CSS untuk kemudahan kustomisasi */
+:root {
+    --primary-brand-color: #004d40; /* Hijau tua elegan */
+    --secondary-accent-color: #ffd700; /* Emas lembut */
+    --background-color-light: #f8f8f8;
+    --background-color-dark: #e0e0e0;
+    --card-background: #ffffff;
+    --text-color-dark: #2c3e50; /* Abu-abu gelap untuk teks utama */
+    --text-color-light: #7f8c8d; /* Abu-abu terang untuk sub-teks */
+    --border-color-subtle: #eceff1;
+    --shadow-soft: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Montserrat', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--background-color-light), var(--background-color-dark));
+    margin: 0;
+    padding: 25px; /* Sedikit padding untuk estetika */
+    box-sizing: border-box;
+    color: var(--text-color-dark);
+    line-height: 1.6;
+    overflow-x: hidden; /* Mencegah scroll horizontal */
+}
+
+/* Kontainer utama aplikasi */
+.app-container {
+    background-color: var(--card-background);
+    border-radius: 18px;
+    box-shadow: 0 15px 40px var(--shadow-medium);
+    padding: 35px;
+    max-width: 1200px; /* Ukuran yang lebih besar untuk kesan mewah */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    overflow: hidden;
+}
+
+/* Header Aplikasi */
+.app-header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color-subtle);
+}
+
+.app-title {
+    font-family: var(--font-heading);
+    font-size: 3.5em;
+    color: var(--primary-brand-color);
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.app-title .location {
+    font-size: 0.6em; /* Ukuran lebih kecil untuk lokasi */
+    color: var(--secondary-accent-color);
+    display: block; /* Agar Balikpapan di baris baru */
+    margin-top: -10px;
+    font-weight: 600;
+}
+
+.app-subtitle {
+    font-size: 1.2em;
+    color: var(--text-color-light);
+    margin-top: 10px;
+}
+
+/* Bagian Konten Utama (Denah + Detail Panel) */
+.main-content {
+    display: flex;
+    flex-direction: column; /* Default: stack vertikal */
+    gap: 35px;
+    align-items: flex-start;
+}
+
+@media (min-width: 992px) { /* Breakpoint untuk desktop/tablet besar */
+    .main-content {
+        flex-direction: row; /* Di layar besar: berdampingan */
+    }
+}
+
+/* Kontainer Denah */
+.floor-plan-wrapper {
+    position: relative;
+    width: 100%;
+    min-width: 320px; /* Lebar minimum denah */
+    max-width: 700px; /* Lebar maksimum denah */
+    padding-bottom: 70%; /* Rasio aspek denah (misal: 100% untuk persegi) */
+    background-color: var(--background-color-light);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px var(--shadow-soft);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+@media (min-width: 992px) {
+    .floor-plan-wrapper {
+        width: 60%; /* Denah mengambil 60% dari lebar main-content */
+        padding-bottom: 45%; /* Sesuaikan rasio aspek di desktop */
+    }
+}
+
+.floor-plan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.area {
+    position: absolute;
+    background-color: rgba(200, 230, 200, 0.9); /* Warna dasar area dengan transparansi */
+    border: 1px solid rgba(150, 200, 150, 0.8);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.8em;
+    font-weight: 600;
+    color: var(--text-color-dark);
+    cursor: pointer;
+    box-shadow: 0 4px 10px var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transisi lebih halus */
+    padding: 5px; /* Memberi sedikit ruang internal */
+}
+
+.area:hover {
+    background-color: rgba(170, 210, 170, 0.95);
+    transform: translateY(-5px) scale(1.02); /* Efek melayang dan sedikit membesar */
+    box-shadow: 0 10px 25px var(--shadow-medium);
+    z-index: 10;
+}
+
+.area-icon {
+    font-size: 2.2em; /* Ukuran ikon */
+    color: var(--primary-brand-color);
+    margin-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+.area:hover .area-icon {
+    color: var(--secondary-accent-color); /* Warna ikon berubah saat hover */
+}
+
+.area-label {
+    background-color: rgba(255, 255, 255, 0.85); /* Latar belakang label agar lebih terbaca */
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    white-space: nowrap; /* Mencegah teks label putus baris */
+}
+
+/* Penempatan dan ukuran setiap area (gunakan persentase untuk responsivitas) */
+#area-kebun-kangkung {
+    top: 5%;
+    left: 5%;
+    width: 60%;
+    height: 50%;
+    background-color: rgba(180, 220, 180, 0.9); /* Hijau muda untuk kebun */
+    border: 1px solid rgba(140, 180, 140, 0.8);
+}
+
+#area-homestay {
+    top: 5%;
+    left: 70%;
+    width: 25%;
+    height: 25%;
+    background-color: rgba(255, 240, 200, 0.9); /* Krem untuk bangunan */
+    border: 1px solid rgba(220, 200, 160, 0.8);
+}
+
+#area-food-court {
+    top: 60%;
+    left: 5%;
+    width: 40%;
+    height: 35%;
+    background-color: rgba(255, 220, 180, 0.9); /* Oranye muda untuk area makan */
+    border: 1px solid rgba(220, 180, 140, 0.8);
+}
+
+#area-edukasi {
+    top: 35%;
+    left: 70%;
+    width: 25%;
+    height: 20%;
+    background-color: rgba(200, 220, 255, 0.9); /* Biru muda untuk edukasi */
+    border: 1px solid rgba(160, 180, 220, 0.8);
+}
+
+#area-spot-foto {
+    top: 60%;
+    left: 50%;
+    width: 45%;
+    height: 35%;
+    background-color: rgba(255, 200, 220, 0.9); /* Pink muda untuk spot foto */
+    border: 1px solid rgba(220, 160, 180, 0.8);
+    /* Anda bisa tambahkan beberapa area kecil untuk spot foto individual */
+}
+
+/* Jika Anda ingin spot foto terpisah: */
+/*
+#area-spot-foto-1 { top: 60%; left: 50%; width: 20%; height: 15%; background-color: rgba(255, 200, 220, 0.9); border: 1px solid rgba(220, 160, 180, 0.8); }
+#area-spot-foto-2 { top: 70%; left: 75%; width: 20%; height: 15%; background-color: rgba(255, 200, 220, 0.9); border: 1px solid rgba(220, 160, 180, 0.8); }
+*/
+
+
+/* Detail Panel */
+.detail-panel {
+    flex-grow: 1;
+    background-color: var(--card-background);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px); /* Mulai lebih jauh ke bawah */
+    visibility: hidden;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out, visibility 0.5s;
+    min-height: 300px; /* Tinggi minimum panel detail */
+    text-align: left;
+}
+
+.detail-panel.active {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2.2em; /* Ukuran ikon tutup */
+    cursor: pointer;
+    color: var(--text-color-light);
+    transition: color 0.2s ease, transform 0.3s ease-out;
+    padding: 5px; /* Area klik lebih besar */
+}
+
+.close-button:hover {
+    color: var(--primary-brand-color);
+    transform: rotate(90deg) scale(1.1); /* Rotasi dan sedikit membesar */
+}
+
+.detail-content {
+    flex-grow: 1; /* Konten mengisi ruang sisa di panel */
+}
+
+.detail-title {
+    font-family: var(--font-heading);
+    color: var(--primary-brand-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 2em;
+    border-bottom: 3px solid var(--secondary-accent-color); /* Garis bawah elegan */
+    padding-bottom: 12px;
+    text-align: center;
+}
+
+.detail-image-container {
+    width: 100%;
+    max-height: 250px; /* Tinggi maksimum gambar */
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px var(--shadow-soft);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.detail-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Pastikan gambar mengisi container tanpa terdistorsi */
+    transition: transform 0.3s ease;
+}
+
+.detail-image:hover {
+    transform: scale(1.05); /* Zoom in sedikit saat hover */
+}
+
+.detail-description {
+    font-size: 1.1em;
+    color: var(--text-color-dark);
+    margin-bottom: 20px;
+}
+
+.panel-footer {
+    border-top: 1px solid var(--border-color-subtle);
+    padding-top: 18px;
+    margin-top: 25px;
+    font-size: 0.9em;
+    color: var(--text-color-light);
+    text-align: center;
+}
+
+/* Footer Aplikasi Global */
+.app-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color-subtle);
+    color: var(--text-color-light);
+    font-size: 0.9em;
+}
+
+/* Media Queries untuk Responsivitas */
+@media (max-width: 991px) {
+    .app-container {
+        padding: 25px;
+    }
+    .app-title {
+        font-size: 2.5em;
+    }
+    .app-subtitle {
+        font-size: 1em;
+    }
+    .floor-plan-wrapper {
+        padding-bottom: 75%; /* Rasio aspek yang lebih persegi di tablet/ponsel */
+    }
+    .detail-panel {
+        padding: 25px;
+        min-height: 200px;
+    }
+    .detail-title {
+        font-size: 1.8em;
+    }
+    .close-button {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 767px) {
+    body {
+        padding: 15px;
+    }
+    .app-container {
+        padding: 20px;
+        gap: 25px;
+    }
+    .app-title {
+        font-size: 2em;
+    }
+    .app-title .location {
+        font-size: 0.5em;
+    }
+    .app-subtitle {
+        font-size: 0.9em;
+    }
+    .area-icon {
+        font-size: 1.8em;
+    }
+    .area-label {
+        font-size: 0.8em;
+        padding: 2px 5px;
+    }
+    .detail-panel {
+        padding: 20px;
+        min-height: 180px;
+    }
+    .detail-title {
+        font-size: 1.5em;
+    }
+    .detail-description {
+        font-size: 0.9em;
+    }
+    .panel-footer {
+        font-size: 0.8em;
+    }
+}
+
+/* --- Google Maps Section --- */
+.map-section {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px var(--shadow-soft);
+    padding: 30px;
+    margin-top: 40px; /* Jarak dari konten di atasnya */
+    text-align: center;
+}
+
+.map-title {
+    font-family: var(--font-heading);
+    font-size: 2.2em;
+    color: var(--primary-brand-color);
+    margin-bottom: 25px;
+}
+
+.google-map-container {
+    position: relative;
+    width: 100%;
+    /* Rasio aspek 16:9 untuk peta */
+    padding-bottom: 56.25%; /* (height / width) * 100% = (9 / 16) * 100% */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px var(--shadow-soft);
+}
+
+.google-map-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.map-address {
+    font-size: 1.1em;
+    color: var(--text-color-dark);
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.btn-directions {
+    display: inline-block;
+    background-color: var(--secondary-accent-color);
+    color: var(--text-color-dark); /* Atau sesuaikan agar kontras */
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-directions:hover {
+    background-color: darken(var(--secondary-accent-color), 10%); /* Perlu SASS atau hitungan manual */
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-directions i {
+    margin-right: 8px;
+}
+
+/* Responsivitas untuk peta */
+@media (max-width: 767px) {
+    .map-section {
+        padding: 20px;
+    }
+    .map-title {
+        font-size: 1.8em;
+    }
+    .google-map-container {
+        padding-bottom: 75%; /* Lebih tinggi di ponsel (rasio 4:3) */
+    }
+    .map-address {
+        font-size: 1em;
+    }
+    .btn-directions {
+        font-size: 0.95em;
+        padding: 10px 20px;
+    }
+}
