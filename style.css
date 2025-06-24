@@ -12,38 +12,62 @@
     --shadow-medium: rgba(0, 0, 0, 0.15);
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Montserrat', sans-serif;
+
+    /* Warna Kustom untuk Denah */
+    --kangkung-color: #A3E4D7; /* Hijau muda cerah */
+    --pujasera-color: #F7DC6F; /* Kuning cerah */
+    --homestay-color: #85C1E9; /* Biru muda cerah */
 }
 
 body {
     font-family: var(--font-body);
     display: flex;
-    justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Konten mulai dari atas */
+    justify-content: center; /* Pusatkan horizontal */
     min-height: 100vh;
-    background: linear-gradient(135deg, var(--background-color-light), var(--background-color-dark));
     margin: 0;
-    padding: 25px; /* Sedikit padding untuk estetika */
+    padding: 50px 25px; /* Padding atas/bawah untuk app-container */
     box-sizing: border-box;
     color: var(--text-color-dark);
     line-height: 1.6;
-    overflow-x: hidden; /* Mencegah scroll horizontal */
+    overflow-x: hidden;
+
+    background-image: url('img/bg.jpg'); /* Pastikan path dan nama file benar */
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed; /* Background tetap saat di-scroll */
+    background-repeat: no-repeat;
+    position: relative;
 }
 
-/* Kontainer utama aplikasi */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+}
+
 .app-container {
     background-color: var(--card-background);
     border-radius: 18px;
     box-shadow: 0 15px 40px var(--shadow-medium);
-    padding: 35px;
-    max-width: 1200px; /* Ukuran yang lebih besar untuk kesan mewah */
+    padding: 30px;
+    max-width: 1500px;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 40px;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
+    margin-top: 50px; /* Dorong app-container turun */
+    margin-bottom: 50px;
 }
 
-/* Header Aplikasi */
 .app-header {
     text-align: center;
     padding-bottom: 20px;
@@ -59,9 +83,9 @@ body {
 }
 
 .app-title .location {
-    font-size: 0.6em; /* Ukuran lebih kecil untuk lokasi */
+    font-size: 0.6em;
     color: var(--secondary-accent-color);
-    display: block; /* Agar Balikpapan di baris baru */
+    display: block;
     margin-top: -10px;
     font-weight: 600;
 }
@@ -72,28 +96,26 @@ body {
     margin-top: 10px;
 }
 
-/* Bagian Konten Utama (Denah + Detail Panel) */
 .main-content {
     display: flex;
-    flex-direction: column; /* Default: stack vertikal */
+    flex-direction: column;
     gap: 35px;
     align-items: flex-start;
 }
 
-@media (min-width: 992px) { /* Breakpoint untuk desktop/tablet besar */
+@media (min-width: 992px) {
     .main-content {
-        flex-direction: row; /* Di layar besar: berdampingan */
+        flex-direction: row;
     }
 }
 
-/* Kontainer Denah */
 .floor-plan-wrapper {
     position: relative;
     width: 100%;
-    min-width: 320px; /* Lebar minimum denah */
-    max-width: 700px; /* Lebar maksimum denah */
-    padding-bottom: 70%; /* Rasio aspek denah (misal: 100% untuk persegi) */
-    background-color: var(--background-color-light);
+    min-width: 320px;
+    max-width: 1000px; /* Lebar maksimum denah */
+    padding-bottom: 70%; /* <--- Rasio aspek untuk denah secara keseluruhan */
+    background-color: var(--background-color-light); /* Latar belakang polos */
     border: 1px solid var(--border-color-subtle);
     border-radius: 12px;
     box-shadow: 0 6px 20px var(--shadow-soft);
@@ -103,8 +125,8 @@ body {
 
 @media (min-width: 992px) {
     .floor-plan-wrapper {
-        width: 60%; /* Denah mengambil 60% dari lebar main-content */
-        padding-bottom: 45%; /* Sesuaikan rasio aspek di desktop */
+        width: 60%;
+        padding-bottom: 60%; /* Sesuaikan rasio aspek di desktop jika denah lebih 'persegi' */
     }
 }
 
@@ -114,13 +136,14 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    /* Tidak ada background-image lagi */
 }
 
+/* --- Gaya untuk Area Kotak (Area Umum) --- */
 .area {
     position: absolute;
-    background-color: rgba(200, 230, 200, 0.9); /* Warna dasar area dengan transparansi */
-    border: 1px solid rgba(150, 200, 150, 0.8);
-    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Border tipis */
+    border-radius: 15px; /* Sudut melengkung */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -131,91 +154,184 @@ body {
     color: var(--text-color-dark);
     cursor: pointer;
     box-shadow: 0 4px 10px var(--shadow-soft);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transisi lebih halus */
-    padding: 5px; /* Memberi sedikit ruang internal */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding: 5px;
+    z-index: 2; /* Di bawah map-point */
 }
 
 .area:hover {
-    background-color: rgba(170, 210, 170, 0.95);
-    transform: translateY(-5px) scale(1.02); /* Efek melayang dan sedikit membesar */
-    box-shadow: 0 10px 25px var(--shadow-medium);
-    z-index: 10;
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 8px 20px var(--shadow-medium);
+    z-index: 4;
 }
 
 .area-icon {
-    font-size: 2.2em; /* Ukuran ikon */
+    font-size: 2.2em;
     color: var(--primary-brand-color);
     margin-bottom: 5px;
     transition: color 0.3s ease;
 }
 
 .area:hover .area-icon {
-    color: var(--secondary-accent-color); /* Warna ikon berubah saat hover */
+    color: var(--secondary-accent-color);
 }
 
 .area-label {
-    background-color: rgba(255, 255, 255, 0.85); /* Latar belakang label agar lebih terbaca */
+    background-color: rgba(255, 255, 255, 0.85);
     padding: 3px 8px;
     border-radius: 4px;
     font-size: 0.9em;
-    white-space: nowrap; /* Mencegah teks label putus baris */
+    white-space: nowrap;
 }
 
-/* Penempatan dan ukuran setiap area (gunakan persentase untuk responsivitas) */
-#area-kebun-kangkung {
-    top: 5%;
-    left: 5%;
-    width: 60%;
-    height: 50%;
-    background-color: rgba(180, 220, 180, 0.9); /* Hijau muda untuk kebun */
-    border: 1px solid rgba(140, 180, 140, 0.8);
+/* --- Warna Spesifik untuk Area Kotak --- */
+/* Kebun Kangkung (Hijau) */
+#area-kangkung-1,
+#area-kangkung-2,
+#area-kangkung-3,
+#area-kangkung-4 {
+    background-color: var(--kangkung-color);
 }
 
-#area-homestay {
+/* Pujasera (Kuning) */
+#area-pujasera-utama {
+    background-color: var(--pujasera-color);
+}
+
+/* Home Stay (Biru) */
+#area-homestay-1,
+#area-homestay-2,
+#area-homestay-3,
+#area-homestay-4 {
+    background-color: var(--homestay-color);
+}
+
+
+/* --- PENTING: Penempatan Setiap Area Kotak Sesuai Gambar --- */
+/* Ini adalah perkiraan visual. Sesuaikan dengan Denah Anda! */
+#area-kangkung-1 { /* Kotak hijau panjang di atas */
     top: 5%;
-    left: 70%;
+    left: 10%;
+    width: 80%;
+    height: 15%;
+}
+#area-kangkung-2 { /* Kotak hijau tipis kiri atas */
+    top: 25%;
+    left: 10%;
+    width: 15%;
+    height: 40%;
+}
+#area-kangkung-3 { /* Kotak hijau besar kanan atas */
+    top: 25%;
+    left: 30%;
+    width: 55%;
+    height: 40%;
+}
+#area-pujasera-utama { /* Kotak kuning di bawah kangkung kiri */
+    top: 70%;
+    left: 20%;
     width: 25%;
     height: 25%;
-    background-color: rgba(255, 240, 200, 0.9); /* Krem untuk bangunan */
-    border: 1px solid rgba(220, 200, 160, 0.8);
 }
-
-#area-food-court {
-    top: 60%;
-    left: 5%;
+#area-kangkung-4 { /* Kotak hijau besar kanan bawah */
+    top: 70%;
+    left: 55%;
     width: 40%;
-    height: 35%;
-    background-color: rgba(255, 220, 180, 0.9); /* Oranye muda untuk area makan */
-    border: 1px solid rgba(220, 180, 140, 0.8);
+    height: 25%;
 }
-
-#area-edukasi {
-    top: 35%;
-    left: 70%;
-    width: 25%;
-    height: 20%;
-    background-color: rgba(200, 220, 255, 0.9); /* Biru muda untuk edukasi */
-    border: 1px solid rgba(160, 180, 220, 0.8);
+#area-homestay-1 { /* Kotak biru kiri atas 1 */
+    top: 25%;
+    left: 0%;
+    width: 8%;
+    height: 10%;
 }
-
-#area-spot-foto {
+#area-homestay-2 { /* Kotak biru kiri atas 2 */
+    top: 40%;
+    left: 0%;
+    width: 8%;
+    height: 10%;
+}
+#area-homestay-3 { /* Kotak biru kiri bawah */
     top: 60%;
-    left: 50%;
-    width: 45%;
-    height: 35%;
-    background-color: rgba(255, 200, 220, 0.9); /* Pink muda untuk spot foto */
-    border: 1px solid rgba(220, 160, 180, 0.8);
-    /* Anda bisa tambahkan beberapa area kecil untuk spot foto individual */
+    left: 0%;
+    width: 8%;
+    height: 10%;
+}
+#area-homestay-4 { /* Kotak biru kanan */
+    top: 70%;
+    left: 90%;
+    width: 8%;
+    height: 15%;
 }
 
-/* Jika Anda ingin spot foto terpisah: */
-/*
-#area-spot-foto-1 { top: 60%; left: 50%; width: 20%; height: 15%; background-color: rgba(255, 200, 220, 0.9); border: 1px solid rgba(220, 160, 180, 0.8); }
-#area-spot-foto-2 { top: 70%; left: 75%; width: 20%; height: 15%; background-color: rgba(255, 200, 220, 0.9); border: 1px solid rgba(220, 160, 180, 0.8); }
-*/
 
+/* --- Gaya untuk Titik Lingkaran (map-point) --- */
+.map-point {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    background-color: var(--primary-brand-color);
+    border: 2px solid var(--secondary-accent-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.9em;
+    color: var(--card-background);
+    cursor: pointer;
+    box-shadow: 0 3px 8px var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 5;
+    transform: translate(-50%, -50%); /* Memastikan titik berada di tengah koordinat */
+}
 
-/* Detail Panel */
+.map-point:hover {
+    background-color: var(--secondary-accent-color);
+    color: var(--primary-brand-color);
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 8px 20px var(--shadow-medium);
+    z-index: 10;
+}
+
+.map-point .point-number {
+    line-height: 1;
+}
+
+/* --- PENTING: Penempatan Setiap Titik Lingkaran (Contoh Posisi) --- */
+/* Sesuaikan posisi ini agar cocok dengan kotak area di atas atau di antaranya. */
+/* Koordinat ini adalah perkiraan baru berdasarkan layout kotak yang diperbarui */
+#point-master-point { top: 15%; left: 50%; } /* Di dalam kangkung atas */
+#point-pujasera-spesifik { top: 83%; left: 33%; } /* Di dalam Pujasera kuning */
+#point-sekretariat { top: 30%; left: 80%; } /* Di dalam kangkung C */
+#point-toilet-umum { top: 40%; left: 85%; } /* Di dalam kangkung C */
+#point-mading { top: 35%; left: 20%; } /* Di dalam kangkung B */
+#point-area-bermain { top: 50%; left: 45%; } /* Di dalam kangkung C */
+#point-gazebo { top: 50%; left: 35%; } /* Di dalam kangkung C */
+#point-edukasi-kangkung { top: 35%; left: 60%; } /* Di dalam kangkung C */
+#point-aquaponik { top: 55%; left: 65%; } /* Di dalam kangkung C */
+#point-toga { top: 80%; left: 60%; } /* Di dalam kangkung D */
+#point-kandang-pupuk { top: 85%; left: 70%; } /* Di dalam kangkung D */
+#point-kincir-ontel { top: 80%; left: 80%; } /* Di dalam kangkung D */
+#point-amor-kangkung { top: 75%; left: 40%; } /* Dekat Pujasera kuning */
+#point-selamat-datang { top: 5%; left: 5%; } /* Di sudut kiri atas, dekat kangkung 1 */
+#point-kincir-psht { top: 90%; left: 80%; } /* Di dalam kangkung D */
+#point-rumah-wonderful { top: 85%; left: 90%; } /* Di dalam kangkung D */
+#point-sapta-pesona { top: 45%; left: 70%; } /* Di dalam kangkung C */
+#point-petunjuk-arah { top: 15%; left: 15%; } /* Di dalam kangkung B */
+#point-jalur-evakuasi { top: 95%; left: 50%; } /* Di bawah tengah */
+#point-area-parkir-spesifik { top: 90%; left: 10%; } /* Dekat kangkung D / pujasera */
+#point-hidroponik { top: 40%; left: 35%; } /* Di dalam kangkung C */
+#point-budidaya-tauge { top: 50%; left: 55%; } /* Di dalam kangkung C */
+#point-foto-tulisan-love { top: 20%; left: 85%; } /* Di dalam kangkung C */
+#point-foto-love { top: 30%; left: 90%; } /* Di dalam kangkung C */
+#point-beranda-instagram { top: 25%; left: 5%; } /* Di Homestay A */
+#point-homestay-spesifik { top: 30%; left: 3%; } /* Di dalam Homestay A */
+#point-produksi-keripik { top: 45%; left: 3%; } /* Di dalam Homestay B */
+#point-produksi-bolu { top: 55%; left: 3%; } /* Di dalam Homestay B */
+#point-gapura { top: 95%; left: 90%; } /* Di sudut kanan bawah */
+
+/* Detail Panel (tetap sama) */
 .detail-panel {
     flex-grow: 1;
     background-color: var(--card-background);
@@ -226,10 +342,10 @@ body {
     flex-direction: column;
     position: relative;
     opacity: 0;
-    transform: translateY(30px); /* Mulai lebih jauh ke bawah */
+    transform: translateY(30px);
     visibility: hidden;
     transition: opacity 0.5s ease-out, transform 0.5s ease-out, visibility 0.5s;
-    min-height: 300px; /* Tinggi minimum panel detail */
+    min-height: 300px;
     text-align: left;
 }
 
@@ -245,20 +361,20 @@ body {
     right: 15px;
     background: none;
     border: none;
-    font-size: 2.2em; /* Ukuran ikon tutup */
+    font-size: 2.2em;
     cursor: pointer;
     color: var(--text-color-light);
     transition: color 0.2s ease, transform 0.3s ease-out;
-    padding: 5px; /* Area klik lebih besar */
+    padding: 5px;
 }
 
 .close-button:hover {
     color: var(--primary-brand-color);
-    transform: rotate(90deg) scale(1.1); /* Rotasi dan sedikit membesar */
+    transform: rotate(90deg) scale(1.1);
 }
 
 .detail-content {
-    flex-grow: 1; /* Konten mengisi ruang sisa di panel */
+    flex-grow: 1;
 }
 
 .detail-title {
@@ -267,14 +383,14 @@ body {
     margin-top: 0;
     margin-bottom: 20px;
     font-size: 2em;
-    border-bottom: 3px solid var(--secondary-accent-color); /* Garis bawah elegan */
+    border-bottom: 3px solid var(--secondary-accent-color);
     padding-bottom: 12px;
     text-align: center;
 }
 
 .detail-image-container {
     width: 100%;
-    max-height: 250px; /* Tinggi maksimum gambar */
+    max-height: 250px;
     overflow: hidden;
     border-radius: 8px;
     margin-bottom: 20px;
@@ -287,12 +403,12 @@ body {
 .detail-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Pastikan gambar mengisi container tanpa terdistorsi */
+    object-fit: cover;
     transition: transform 0.3s ease;
 }
 
 .detail-image:hover {
-    transform: scale(1.05); /* Zoom in sedikit saat hover */
+    transform: scale(1.05);
 }
 
 .detail-description {
@@ -332,7 +448,7 @@ body {
         font-size: 1em;
     }
     .floor-plan-wrapper {
-        padding-bottom: 75%; /* Rasio aspek yang lebih persegi di tablet/ponsel */
+        padding-bottom: 75%;
     }
     .detail-panel {
         padding: 25px;
@@ -363,12 +479,10 @@ body {
     .app-subtitle {
         font-size: 0.9em;
     }
-    .area-icon {
-        font-size: 1.8em;
-    }
-    .area-label {
-        font-size: 0.8em;
-        padding: 2px 5px;
+    .map-point {
+        width: 28px;
+        height: 28px;
+        font-size: 0.75em;
     }
     .detail-panel {
         padding: 20px;
@@ -385,13 +499,13 @@ body {
     }
 }
 
-/* --- Google Maps Section --- */
+/* Google Maps Section (tetap sama) */
 .map-section {
     background-color: var(--card-background);
     border-radius: 12px;
     box-shadow: 0 6px 20px var(--shadow-soft);
     padding: 30px;
-    margin-top: 40px; /* Jarak dari konten di atasnya */
+    margin-top: 40px;
     text-align: center;
 }
 
@@ -405,8 +519,7 @@ body {
 .google-map-container {
     position: relative;
     width: 100%;
-    /* Rasio aspek 16:9 untuk peta */
-    padding-bottom: 56.25%; /* (height / width) * 100% = (9 / 16) * 100% */
+    padding-bottom: 56.25%;
     height: 0;
     overflow: hidden;
     border-radius: 8px;
@@ -433,7 +546,7 @@ body {
 .btn-directions {
     display: inline-block;
     background-color: var(--secondary-accent-color);
-    color: var(--text-color-dark); /* Atau sesuaikan agar kontras */
+    color: var(--text-color-dark);
     padding: 12px 25px;
     border-radius: 30px;
     text-decoration: none;
@@ -444,7 +557,7 @@ body {
 }
 
 .btn-directions:hover {
-    background-color: darken(var(--secondary-accent-color), 10%); /* Perlu SASS atau hitungan manual */
+    background-color: darken(var(--secondary-accent-color), 10%);
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
@@ -453,7 +566,6 @@ body {
     margin-right: 8px;
 }
 
-/* Responsivitas untuk peta */
 @media (max-width: 767px) {
     .map-section {
         padding: 20px;
@@ -462,7 +574,7 @@ body {
         font-size: 1.8em;
     }
     .google-map-container {
-        padding-bottom: 75%; /* Lebih tinggi di ponsel (rasio 4:3) */
+        padding-bottom: 75%;
     }
     .map-address {
         font-size: 1em;
